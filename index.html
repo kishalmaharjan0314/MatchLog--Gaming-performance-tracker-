@@ -1,0 +1,377 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MatchLog | Gaming Tracker</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 22px 14px;
+  font-family: Arial, sans-serif;
+  background: #0b1120;
+  color: #f1f5f9;
+}
+
+.container {
+  max-width: 700px;
+  margin: auto;
+}
+
+header {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.logo {
+  font-size: 13px;
+  color: #4adea5;
+  letter-spacing: 3px;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 34px;
+  margin: 12px 0 8px;
+}
+
+h1 span { color: #4adea5; }
+
+.subtitle {
+  color: #94a3b8;
+  line-height: 1.6;
+}
+
+.card {
+  background: #151f32;
+  border: 1px solid #28364c;
+  border-radius: 14px;
+  padding: 20px;
+  margin: 16px 0;
+}
+
+h2 {
+  font-size: 19px;
+  margin-top: 0;
+}
+
+label {
+  display: block;
+  margin: 13px 0 7px;
+  color: #cbd5e1;
+  font-size: 14px;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  background: #0b1120;
+  border: 1px solid #34435a;
+  color: white;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.primary {
+  width: 100%;
+  background: #4adea5;
+  color: #0b1120;
+}
+
+.secondary {
+  background: #28364c;
+  color: white;
+  margin-right: 5px;
+}
+
+.delete {
+  background: #51252e;
+  color: #ffb4bd;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.stat {
+  background: #0b1120;
+  border: 1px solid #28364c;
+  border-radius: 10px;
+  padding: 15px 5px;
+  text-align: center;
+}
+
+.number {
+  color: #4adea5;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.stat-label {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.match {
+  background: #0b1120;
+  border: 1px solid #28364c;
+  border-radius: 10px;
+  padding: 14px;
+  margin-top: 12px;
+  overflow-wrap: anywhere;
+}
+
+.match-title {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.match-info {
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.win { color: #4adea5; }
+.loss { color: #ff8585; }
+.draw { color: #facc15; }
+
+.message {
+  color: #4adea5;
+  font-size: 14px;
+  min-height: 18px;
+}
+
+.empty {
+  text-align: center;
+  color: #94a3b8;
+  padding: 18px 0;
+}
+
+footer {
+  text-align: center;
+  padding: 18px 0;
+  color: #64748b;
+  font-size: 12px;
+}
+
+@media (max-width: 380px) {
+  h1 { font-size: 28px; }
+  .number { font-size: 20px; }
+  .card { padding: 14px; }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <div class="logo">GAMING PERFORMANCE</div>
+  <h1>Match<span>Log</span></h1>
+  <p class="subtitle">
+    Track your matches. Analyze your results.<br>
+    Improve your game, one match at a time.
+  </p>
+</header>
+
+<div class="card">
+  <h2>＋ Record a Match</h2>
+
+  <label for="player">Gaming Name</label>
+  <input id="player" type="text" placeholder="e.g. Lucifer">
+
+  <label for="result">Match Result</label>
+  <select id="result">
+    <option value="Win">Win</option>
+    <option value="Loss">Loss</option>
+    <option value="Draw">Draw</option>
+  </select>
+
+  <label for="kills">Kills</label>
+  <input id="kills" type="number" min="0" step="1" placeholder="Enter kills">
+
+  <label for="deaths">Deaths</label>
+  <input id="deaths" type="number" min="0" step="1" placeholder="Enter deaths">
+
+  <button class="primary" onclick="addMatch()">Add Match</button>
+  <p id="message" class="message"></p>
+</div>
+
+<div class="card">
+  <h2>Performance Overview</h2>
+
+  <div class="stats">
+    <div class="stat">
+      <div id="total" class="number">0</div>
+      <div class="stat-label">MATCHES</div>
+    </div>
+    <div class="stat">
+      <div id="wins" class="number">0</div>
+      <div class="stat-label">WINS</div>
+    </div>
+    <div class="stat">
+      <div id="winRate" class="number">0%</div>
+      <div class="stat-label">WIN RATE</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Match History</h2>
+
+  <button class="secondary" onclick="saveHistory()">Save History</button>
+  <button class="secondary" onclick="loadHistory()">Load History</button>
+
+  <div id="history"></div>
+</div>
+
+<footer>
+  MatchLog · Personal Gaming Statistics Project
+</footer>
+
+</div>
+
+<script>
+let matches = [];
+
+function addMatch() {
+  const player = document.getElementById("player").value.trim();
+  const result = document.getElementById("result").value;
+  const killsText = document.getElementById("kills").value;
+  const deathsText = document.getElementById("deaths").value;
+  const message = document.getElementById("message");
+
+  if (!player || killsText === "" || deathsText === "") {
+    message.textContent = "Please complete all fields.";
+    return;
+  }
+
+  const kills = Number(killsText);
+  const deaths = Number(deathsText);
+
+  if (!Number.isInteger(kills) || !Number.isInteger(deaths)
+      || kills < 0 || deaths < 0) {
+    message.textContent = "Kills and deaths must be whole numbers of 0 or more.";
+    return;
+  }
+
+  matches.push({ player, result, kills, deaths });
+  showHistory();
+  saveHistory(true);
+
+  document.getElementById("kills").value = "";
+  document.getElementById("deaths").value = "";
+  message.textContent = "Match recorded successfully!";
+}
+
+function showHistory() {
+  const total = matches.length;
+  const wins = matches.filter(m => m.result === "Win").length;
+  const rate = total === 0 ? 0 : wins / total * 100;
+
+  document.getElementById("total").textContent = total;
+  document.getElementById("wins").textContent = wins;
+  document.getElementById("winRate").textContent = rate.toFixed(1) + "%";
+
+  const history = document.getElementById("history");
+  history.innerHTML = "";
+
+  if (total === 0) {
+    const empty = document.createElement("p");
+    empty.className = "empty";
+    empty.textContent = "No matches recorded yet.";
+    history.appendChild(empty);
+    return;
+  }
+
+  matches.forEach((m, index) => {
+    const card = document.createElement("div");
+    card.className = "match";
+
+    const title = document.createElement("div");
+    title.className = "match-title";
+    title.textContent = "Match " + (index + 1) + " · " + m.player;
+
+    const result = document.createElement("p");
+    result.className = "match-info " + m.result.toLowerCase();
+    result.textContent = "Result: " + m.result;
+
+    const stats = document.createElement("p");
+    stats.className = "match-info";
+    stats.textContent = "Kills: " + m.kills + " | Deaths: " + m.deaths;
+
+    const del = document.createElement("button");
+    del.className = "delete";
+    del.textContent = "Delete Match";
+    del.onclick = function() { deleteMatch(index); };
+
+    card.appendChild(title);
+    card.appendChild(result);
+    card.appendChild(stats);
+    card.appendChild(del);
+    history.appendChild(card);
+  });
+}
+
+function deleteMatch(index) {
+  if (!confirm("Delete this match?")) return;
+
+  matches.splice(index, 1);
+  showHistory();
+  saveHistory(true);
+  document.getElementById("message").textContent = "Match deleted.";
+}
+
+function saveHistory(silent = false) {
+  try {
+    localStorage.setItem("gamingMatchHistory", JSON.stringify(matches));
+    if (!silent) {
+      document.getElementById("message").textContent = "History saved!";
+    }
+  } catch (error) {
+    document.getElementById("message").textContent = "Unable to save history.";
+  }
+}
+
+function loadHistory() {
+  try {
+    const saved = localStorage.getItem("gamingMatchHistory");
+
+    if (saved === null) {
+      document.getElementById("message").textContent = "No saved history found.";
+      return;
+    }
+
+    const loaded = JSON.parse(saved);
+    if (!Array.isArray(loaded)) throw new Error("Invalid history");
+
+    matches = loaded;
+    showHistory();
+    document.getElementById("message").textContent = "History loaded!";
+  } catch (error) {
+    document.getElementById("message").textContent = "Unable to load history.";
+  }
+}
+
+loadHistory();
+showHistory();
+</script>
+</body>
+</html>
